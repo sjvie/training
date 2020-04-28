@@ -19,16 +19,20 @@ public class Countdown {
             seconds = Integer.parseInt(args[0]);
         } else if (args.length == 2) {
         	LocalTime now = LocalTime.now();
-        	try {
-        		LocalTime then = LocalTime.of(Integer.parseInt(args[0]), Integer.parseInt(args[1]));
-        		seconds = (int) now.until(then, ChronoUnit.SECONDS);
-        		if(seconds < 0) {
-        			seconds += 24 * 60 * 60;
-        		}
-        	}catch(DateTimeException e) {
-        		System.out.println("Invalid arguments. Hour must be between 0-23, minute must be between 0-59.");
+            int hour = Integer.parseInt(args[0]);
+            int minute = Integer.parseInt(args[1]);
+            if(hour > 23 || hour < 0 || minute > 59 || minute < 0){
+                System.out.println("Invalid arguments. Hour must be between 0-23, minute must be between 0-59.");
         		System.exit(1);
-        	}
+            }
+        	
+            LocalTime then = LocalTime.of(Integer.parseInt(args[0]), Integer.parseInt(args[1]));
+            seconds = (int) now.until(then, ChronoUnit.SECONDS);
+            if(seconds < 0) {
+                // add 1 day in seconds
+                seconds += 24 * 60 * 60;
+            }
+        	
         } else {
             seconds = 60;
         }
